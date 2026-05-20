@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Avarda Team
+ * @copyright Copyright © Avarda. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="avarda_checkout3_section">
+                <group id="shipping">
+                    <field id="partner_secret" translate="label comment" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Partner Bearer Secret</label>
+                        <comment>Shared secret Avarda will send as `Authorization: Bearer ...` when calling the partner shipping endpoints. Configure the same value in the Avarda merchant portal.</comment>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                        <config_path>carriers/avarda/partner_secret</config_path>
+                        <depends>
+                            <field id="provider">partner</field>
+                        </depends>
+                    </field>
+                    <field id="partner_session_ttl" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Session TTL (seconds)</label>
+                        <comment>How long a partner shipping session stays active before expiring.</comment>
+                        <validate>validate-digits validate-greater-than-zero</validate>
+                        <config_path>carriers/avarda/partner_session_ttl</config_path>
+                        <depends>
+                            <field id="provider">partner</field>
+                        </depends>
+                    </field>
+                    <field id="partner_allowed_methods" translate="label comment" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allowed Magento shipping methods</label>
+                        <comment>Restrict which Magento carriers/methods are exposed through the partner widget. Leave empty to expose all active methods.</comment>
+                        <source_model>Magento\Shipping\Model\Config\Source\Allmethods</source_model>
+                        <can_be_empty>1</can_be_empty>
+                        <config_path>carriers/avarda/partner_allowed_methods</config_path>
+                        <depends>
+                            <field id="provider">partner</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="avarda_shipping_broker_partner_session" resource="default" engine="innodb" comment="Avarda Partner Shipping sessions">
+        <column name="entity_id" xsi:type="int" unsigned="true" identity="true" nullable="false" comment="Entity ID"/>
+        <column name="session_id" xsi:type="varchar" length="64" nullable="false" comment="Avarda partner session ID (UUID)"/>
+        <column name="purchase_id" xsi:type="varchar" length="64" nullable="false" comment="Avarda Checkout3 purchase ID"/>
+        <column name="quote_id" xsi:type="int" unsigned="true" nullable="true" comment="Magento quote ID resolved from purchase ID"/>
+        <column name="status" xsi:type="varchar" length="16" nullable="false" comment="ACTIVE | COMPLETED"/>
+        <column name="transport_id" xsi:type="varchar" length="64" nullable="true" comment="Issued on completion"/>
+        <column name="selected_option" xsi:type="text" nullable="true" comment="Selected shipping option (JSON)"/>
+        <column name="delivery_address" xsi:type="text" nullable="true" comment="Delivery address snapshot (JSON)"/>
+        <column name="modules" xsi:type="text" nullable="true" comment="Widget modules payload (JSON)"/>
+        <column name="expires_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" comment="Session expiry"/>
+        <column name="created_at" xsi:type="timestamp" nullable="false" on_update="false" default="CURRENT_TIMESTAMP" comment="Created at"/>
+        <column name="updated_at" xsi:type="timestamp" nullable="false" on_update="true" default="CURRENT_TIMESTAMP" comment="Updated at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AVARDA_SBP_SESSION_ID">
+            <column name="session_id"/>
+        </constraint>
+        <index referenceId="AVARDA_SBP_PURCHASE_ID" indexType="btree">
+            <column name="purchase_id"/>
+        </index>
+        <index referenceId="AVARDA_SBP_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+    </table>
+    <table name="sales_order_address" resource="default" engine="innodb">
+        <column name="avarda_shipping_selection" xsi:type="text" nullable="true" comment="Avarda Partner Shipping selection (JSON)"/>
+    </table>
+</schema>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Avarda Team
+ * @copyright Copyright © Avarda. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_save_before">
+        <observer name="Avarda_ShippingBrokerPartner::save_selection_to_order" instance="Avarda\ShippingBrokerPartner\Observer\SaveSelectionToOrder"/>
+    </event>
+</config>

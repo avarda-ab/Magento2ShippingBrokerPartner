@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Avarda Team
+ * @copyright Copyright © Avarda. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Avarda\ShippingBroker\Model\Provider\Pool">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="partner" xsi:type="object">Avarda\ShippingBrokerPartner\Model\Provider\Partner</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Avarda\ShippingBrokerPartner\Model\Provider\Partner">
+        <arguments>
+            <argument name="responseParser" xsi:type="object">Avarda\ShippingBrokerPartner\Gateway\Response\SelectedOptionParser</argument>
+        </arguments>
+    </type>
+
+    <preference for="Avarda\ShippingBrokerPartner\Api\SessionRepositoryInterface"
+                type="Avarda\ShippingBrokerPartner\Model\SessionRepository"/>
+</config>

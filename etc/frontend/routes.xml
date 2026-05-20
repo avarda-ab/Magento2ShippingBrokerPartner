@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Avarda Team
+ * @copyright Copyright © Avarda. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="avarda_shipping_broker_partner" frontName="avarda_shipping_broker_partner">
+            <module name="Avarda_ShippingBrokerPartner"/>
+        </route>
+    </router>
+</config>

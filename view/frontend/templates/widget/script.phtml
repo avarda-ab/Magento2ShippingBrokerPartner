@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+/** @var \Avarda\ShippingBrokerPartner\ViewModel\WidgetScript $viewModel */
+$viewModel = $block->getViewModel();
+if (!$viewModel || !$viewModel->isActive()) {
+    return;
+}
+
+$bootstrap = sprintf(
+    'window.avardaShippingPartnerConfig = %s;',
+    json_encode([
+        'stateBaseUrl'  => $viewModel->getStateBaseUrl(),
+        'selectBaseUrl' => $viewModel->getSelectBaseUrl(),
+    ], JSON_UNESCAPED_SLASHES)
+);
+
+$widgetUrl = $block->getViewFileUrl('Avarda_ShippingBrokerPartner::js/widget/avarda-shipping.js');
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $bootstrap, false) ?>
+<?= /* @noEscape */ $secureRenderer->renderTag(
+    'script',
+    ['src' => $escaper->escapeUrl($widgetUrl)],
+    '',
+    false
+) ?>
