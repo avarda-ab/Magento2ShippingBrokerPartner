@@ -24,20 +24,29 @@ use Psr\Log\LoggerInterface;
 use Throwable;
 
 /**
- * Public write endpoint the widget POSTs to when the customer picks a shipping
- * option. Avarda's checkout doesn't include the selection in update/complete-
- * session payloads, so the widget has to inform the backend directly. The
- * session id in the URL doubles as the auth token (unguessable UUID v4).
+ * Widget write endpoint for the selected option. No bearer auth — the
+ * session_id is the token.
  */
 class Select implements ActionInterface, CsrfAwareActionInterface
 {
+    protected RequestInterface $request;
+    protected JsonResultFactory $jsonResultFactory;
+    protected SessionManagement $sessionManagement;
+    protected Json $serializer;
+    protected LoggerInterface $logger;
+
     public function __construct(
-        private readonly RequestInterface $request,
-        private readonly JsonResultFactory $jsonResultFactory,
-        private readonly SessionManagement $sessionManagement,
-        private readonly Json $serializer,
-        private readonly LoggerInterface $logger
+        RequestInterface $request,
+        JsonResultFactory $jsonResultFactory,
+        SessionManagement $sessionManagement,
+        Json $serializer,
+        LoggerInterface $logger
     ) {
+        $this->request = $request;
+        $this->jsonResultFactory = $jsonResultFactory;
+        $this->sessionManagement = $sessionManagement;
+        $this->serializer = $serializer;
+        $this->logger = $logger;
     }
 
     public function execute(): ResultInterface
@@ -57,7 +66,10 @@ class Select implements ActionInterface, CsrfAwareActionInterface
                 $payload = [];
             }
             $shippingMethod = (string) ($payload['shippingMethod'] ?? '');
-            $response = $this->sessionManagement->recordSelection($sessionId, $shippingMethod);
+            $pickupPointId = isset($payload['pickupPointId']) && (string) $payload['pickupPointId'] !== ''
+                ? (string) $payload['pickupPointId']
+                : null;
+            $response = $this->sessionManagement->recordSelection($sessionId, $shippingMethod, $pickupPointId);
             $result->setHttpResponseCode(200);
             $result->setData($response);
             return $result;

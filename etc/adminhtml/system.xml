@@ -28,16 +28,6 @@
                             <field id="provider">partner</field>
                         </depends>
                     </field>
-                    <field id="partner_allowed_methods" translate="label comment" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Allowed Magento shipping methods</label>
-                        <comment>Restrict which Magento carriers/methods are exposed through the partner widget. Leave empty to expose all active methods.</comment>
-                        <source_model>Magento\Shipping\Model\Config\Source\Allmethods</source_model>
-                        <can_be_empty>1</can_be_empty>
-                        <config_path>carriers/avarda/partner_allowed_methods</config_path>
-                        <depends>
-                            <field id="provider">partner</field>
-                        </depends>
-                    </field>
                 </group>
             </group>
         </section>

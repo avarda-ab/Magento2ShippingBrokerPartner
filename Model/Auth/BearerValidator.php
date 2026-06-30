@@ -15,9 +15,12 @@ use Magento\Framework\App\Request\Http as HttpRequest;
 
 class BearerValidator
 {
+    protected Config $config;
+
     public function __construct(
-        private readonly Config $config
+        Config $config
     ) {
+        $this->config = $config;
     }
 
     public function validate(RequestInterface $request): bool

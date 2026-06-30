@@ -22,47 +22,32 @@ use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\App\RouterInterface;
 
 /**
- * Maps the partner-shipping URL space onto Magento controllers.
- *
- * Two URL forms are accepted for the four partner-side actions:
- *
- *   Scoped (preferred — implementor base URL = `https://<host>/avarda_shipping_broker_partner`):
- *     POST /avarda_shipping_broker_partner/create-session
- *     PUT  /avarda_shipping_broker_partner/update-session/{id}
- *     PUT  /avarda_shipping_broker_partner/complete-session/{id}
- *     GET  /avarda_shipping_broker_partner/get-session/{id}
- *
- *   Bare (fallback — implementor base URL = `https://<host>`):
- *     POST /create-session
- *     PUT  /update-session/{id}
- *     PUT  /complete-session/{id}
- *     GET  /get-session/{id}
- *
- * Widget endpoints are intentionally only exposed under the frontName since
- * only our own JS calls them:
- *
- *     GET  /avarda_shipping_broker_partner/widget/state/{id}
- *     POST /avarda_shipping_broker_partner/widget/select/{id}
+ * Routes the partner endpoints, accepted both scoped under the frontName and
+ * bare at the host root (e.g. /create-session). Widget endpoints are
+ * frontName-only (/widget/state/{id}, /widget/select/{id}).
  */
 class Router implements RouterInterface
 {
-    public const string FRONT_NAME = 'avarda_shipping_broker_partner';
+    public const FRONT_NAME = 'avarda_shipping_broker_partner';
 
     /**
-     * action segment => [controller class, expected HTTP method, expects path id]
+     * action => [controller, HTTP method, expects path id]
      *
      * @var array<string, array{0: class-string, 1: string, 2: bool}>
      */
-    private const array ROUTES = [
+    protected const ROUTES = [
         'create-session'   => [CreateSession::class,   'POST', false],
         'update-session'   => [UpdateSession::class,   'PUT',  true],
         'complete-session' => [CompleteSession::class, 'PUT',  true],
         'get-session'      => [GetSession::class,      'GET',  true],
     ];
 
+    protected ActionFactory $actionFactory;
+
     public function __construct(
-        private readonly ActionFactory $actionFactory
+        ActionFactory $actionFactory
     ) {
+        $this->actionFactory = $actionFactory;
     }
 
     public function match(RequestInterface $request): ?ActionInterface
@@ -78,9 +63,7 @@ class Router implements RouterInterface
             return $this->matchScoped($request, array_slice($segments, 1));
         }
 
-        // Bare form: /create-session etc., when the merchant portal's
-        // implementor base URL is just the host. Widget paths are not exposed
-        // here.
+        // Bare form: /create-session etc. (no widget paths).
         return $this->matchPartnerAction($request, $segments[0] ?? '', array_slice($segments, 1));
     }
 

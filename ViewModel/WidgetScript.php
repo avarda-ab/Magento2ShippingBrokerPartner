@@ -18,17 +18,22 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Backs the partner widget include block: tells the template whether to render
- * (only when the active provider is `partner`) and where the widget can fetch
- * session state from.
+ * Backs the widget template: whether to render and the widget endpoint URLs.
  */
 class WidgetScript implements ArgumentInterface
 {
+    protected Pool $providerPool;
+    protected UrlInterface $url;
+    protected LoggerInterface $logger;
+
     public function __construct(
-        private readonly Pool $providerPool,
-        private readonly UrlInterface $url,
-        private readonly LoggerInterface $logger
+        Pool $providerPool,
+        UrlInterface $url,
+        LoggerInterface $logger
     ) {
+        $this->providerPool = $providerPool;
+        $this->url = $url;
+        $this->logger = $logger;
     }
 
     public function isActive(): bool
@@ -44,20 +49,13 @@ class WidgetScript implements ArgumentInterface
         }
     }
 
-    /**
-     * Base URL the widget calls to refresh session state. The session id is
-     * appended client-side: `${stateBaseUrl}/${sessionId}`.
-     */
+    /** Base URL for the state endpoint; widget appends /{sessionId}. */
     public function getStateBaseUrl(): string
     {
         return rtrim($this->url->getUrl(PartnerRouter::FRONT_NAME . '/widget/state'), '/');
     }
 
-    /**
-     * Base URL the widget POSTs to when the customer changes the selected
-     * shipping option. The session id is appended client-side:
-     * `${selectBaseUrl}/${sessionId}`.
-     */
+    /** Base URL for the select endpoint; widget appends /{sessionId}. */
     public function getSelectBaseUrl(): string
     {
         return rtrim($this->url->getUrl(PartnerRouter::FRONT_NAME . '/widget/select'), '/');

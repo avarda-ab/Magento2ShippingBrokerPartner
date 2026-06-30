@@ -13,14 +13,15 @@ use Magento\Framework\Math\Random;
 
 class UuidGenerator
 {
+    protected Random $random;
+
     public function __construct(
-        private readonly Random $random
+        Random $random
     ) {
+        $this->random = $random;
     }
 
-    /**
-     * RFC 4122 v4 UUID, generated from Magento's CSPRNG-backed random helper.
-     */
+    /** RFC 4122 v4 UUID. */
     public function generate(): string
     {
         $bytes = $this->random->getRandomBytes(16);

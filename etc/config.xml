@@ -9,6 +9,7 @@
     <default>
         <carriers>
             <avarda>
+                <provider>partner</provider>
                 <partner_session_ttl>3600</partner_session_ttl>
             </avarda>
         </carriers>

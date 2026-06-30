@@ -13,9 +13,8 @@ use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 
 /**
- * Mirrors the deliveryAddress field from a partner-session payload onto the
- * quote's shipping address. We never persist the quote here — just mutate the
- * in-memory object so collectShippingRates() runs against the latest input.
+ * Applies the payload deliveryAddress onto the quote's shipping address
+ * in memory (never saved) so rates collect against the latest input.
  */
 class AddressApplier
 {

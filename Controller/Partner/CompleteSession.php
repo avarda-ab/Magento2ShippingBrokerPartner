@@ -19,15 +19,18 @@ use Psr\Log\LoggerInterface;
 
 class CompleteSession extends AbstractAction
 {
+    protected SessionManagement $sessionManagement;
+
     public function __construct(
         RequestInterface $request,
         JsonResultFactory $jsonResultFactory,
         BearerValidator $bearerValidator,
         Json $serializer,
         LoggerInterface $logger,
-        private readonly SessionManagement $sessionManagement
+        SessionManagement $sessionManagement
     ) {
         parent::__construct($request, $jsonResultFactory, $bearerValidator, $serializer, $logger);
+        $this->sessionManagement = $sessionManagement;
     }
 
     protected function handle(array $payload): array

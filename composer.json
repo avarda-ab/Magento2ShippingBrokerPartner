@@ -2,18 +2,25 @@
     "name": "avarda/shipping-broker-partner",
     "description": "Avarda Partner Shipping (Magento as implementor) for the Avarda shipping broker.",
     "type": "magento2-module",
-    "license": ["Proprietary"],
+    "license": [
+        "Proprietary"
+    ],
     "require": {
         "avarda/shipping-broker": "*",
         "avarda/checkout3": "*",
         "magento/module-quote": "*",
         "magento/module-checkout": "*",
+        "magento/module-config": "*",
         "magento/module-sales": "*",
         "magento/module-store": "*",
         "magento/module-shipping": "*"
     },
     "autoload": {
-        "files": ["registration.php"],
-        "psr-4": { "Avarda\\ShippingBrokerPartner\\": "" }
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Avarda\\ShippingBrokerPartner\\": ""
+        }
     }
 }

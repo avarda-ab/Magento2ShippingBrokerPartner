@@ -16,15 +16,19 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
 
 /**
- * Resolves a Magento quote from an Avarda Checkout3 purchaseId by leaning on
- * the existing payment_queue lookup the Checkout3 module already maintains.
+ * Resolves a quote from an Avarda Checkout3 purchaseId.
  */
 class PurchaseIdResolver
 {
+    protected QuotePaymentManagementInterface $quotePaymentManagement;
+    protected CartRepositoryInterface $cartRepository;
+
     public function __construct(
-        private readonly QuotePaymentManagementInterface $quotePaymentManagement,
-        private readonly CartRepositoryInterface $cartRepository
+        QuotePaymentManagementInterface $quotePaymentManagement,
+        CartRepositoryInterface $cartRepository
     ) {
+        $this->quotePaymentManagement = $quotePaymentManagement;
+        $this->cartRepository = $cartRepository;
     }
 
     /**

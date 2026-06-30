@@ -21,18 +21,25 @@ use Magento\Framework\Webapi\Exception as WebapiException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Public read endpoint for the storefront widget — no bearer auth, since the
- * session_id itself is the unguessable token. Returns the same envelope shape
- * the partner endpoints return so the widget can update without branching.
+ * Widget read endpoint. No bearer auth — the session_id is the token.
  */
 class State implements ActionInterface, CsrfAwareActionInterface
 {
+    protected RequestInterface $request;
+    protected JsonResultFactory $jsonResultFactory;
+    protected SessionRepositoryInterface $sessionRepository;
+    protected LoggerInterface $logger;
+
     public function __construct(
-        private readonly RequestInterface $request,
-        private readonly JsonResultFactory $jsonResultFactory,
-        private readonly SessionRepositoryInterface $sessionRepository,
-        private readonly LoggerInterface $logger
+        RequestInterface $request,
+        JsonResultFactory $jsonResultFactory,
+        SessionRepositoryInterface $sessionRepository,
+        LoggerInterface $logger
     ) {
+        $this->request = $request;
+        $this->jsonResultFactory = $jsonResultFactory;
+        $this->sessionRepository = $sessionRepository;
+        $this->logger = $logger;
     }
 
     public function execute(): ResultInterface

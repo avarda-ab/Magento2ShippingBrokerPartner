@@ -24,20 +24,29 @@ use Magento\Framework\Webapi\Exception as WebapiException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Auth + JSON envelope shared by all partner-shipping endpoints.
- *
- * Opts out of Magento's frontend CSRF/form-key validation: Avarda calls these
- * endpoints server-to-server with a Bearer secret, not from a browser session.
+ * Bearer auth + JSON envelope shared by the partner endpoints. CSRF is off
+ * (server-to-server calls, authenticated by the Bearer secret).
  */
 abstract class AbstractAction implements ActionInterface, CsrfAwareActionInterface
 {
+    protected RequestInterface $request;
+    protected JsonResultFactory $jsonResultFactory;
+    protected BearerValidator $bearerValidator;
+    protected Json $serializer;
+    protected LoggerInterface $logger;
+
     public function __construct(
-        protected readonly RequestInterface $request,
-        protected readonly JsonResultFactory $jsonResultFactory,
-        protected readonly BearerValidator $bearerValidator,
-        protected readonly Json $serializer,
-        protected readonly LoggerInterface $logger
+        RequestInterface $request,
+        JsonResultFactory $jsonResultFactory,
+        BearerValidator $bearerValidator,
+        Json $serializer,
+        LoggerInterface $logger
     ) {
+        $this->request = $request;
+        $this->jsonResultFactory = $jsonResultFactory;
+        $this->bearerValidator = $bearerValidator;
+        $this->serializer = $serializer;
+        $this->logger = $logger;
     }
 
     public function execute(): ResultInterface
@@ -60,8 +69,7 @@ abstract class AbstractAction implements ActionInterface, CsrfAwareActionInterfa
     }
 
     /**
-     * Endpoint-specific logic. Receives the decoded JSON body (or empty array
-     * for GET), returns the decoded response body.
+     * Endpoint logic: decoded request body in, response body out.
      *
      * @throws LocalizedException
      * @throws NoSuchEntityException

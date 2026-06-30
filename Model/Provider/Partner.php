@@ -14,11 +14,14 @@ use Avarda\ShippingBroker\Api\ProviderInterface;
 
 class Partner implements ProviderInterface
 {
-    public const string CODE = 'partner';
+    public const CODE = 'partner';
+
+    protected ParserInterface $responseParser;
 
     public function __construct(
-        private readonly ParserInterface $responseParser
+        ParserInterface $responseParser
     ) {
+        $this->responseParser = $responseParser;
     }
 
     public function getCode(): string
@@ -41,7 +44,7 @@ class Partner implements ProviderInterface
         return false;
     }
 
-    public function shouldLoadUnifaunScript(): bool
+    public function shouldLoadCheckoutScript(): bool
     {
         return false;
     }

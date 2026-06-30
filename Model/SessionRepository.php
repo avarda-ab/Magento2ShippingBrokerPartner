@@ -17,11 +17,18 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class SessionRepository implements SessionRepositoryInterface
 {
+    protected SessionResource $resource;
+    protected SessionFactory $sessionFactory;
+    protected CollectionFactory $collectionFactory;
+
     public function __construct(
-        private readonly SessionResource $resource,
-        private readonly SessionFactory $sessionFactory,
-        private readonly CollectionFactory $collectionFactory
+        SessionResource $resource,
+        SessionFactory $sessionFactory,
+        CollectionFactory $collectionFactory
     ) {
+        $this->resource = $resource;
+        $this->sessionFactory = $sessionFactory;
+        $this->collectionFactory = $collectionFactory;
     }
 
     public function save(Session $session): Session

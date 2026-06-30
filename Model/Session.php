@@ -34,8 +34,8 @@ use Magento\Framework\Model\AbstractModel;
  */
 class Session extends AbstractModel
 {
-    public const string STATUS_ACTIVE = 'ACTIVE';
-    public const string STATUS_COMPLETED = 'COMPLETED';
+    public const STATUS_ACTIVE = 'ACTIVE';
+    public const STATUS_COMPLETED = 'COMPLETED';
 
     protected function _construct(): void
     {

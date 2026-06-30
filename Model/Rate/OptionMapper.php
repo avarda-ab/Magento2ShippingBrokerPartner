@@ -12,8 +12,7 @@ namespace Avarda\ShippingBrokerPartner\Model\Rate;
 use Magento\Quote\Model\Quote\Address\Rate;
 
 /**
- * Maps a Magento shipping rate into the partner-shipping selectedShippingOption
- * shape returned by our endpoints.
+ * Maps a Magento rate to the selectedShippingOption shape.
  */
 class OptionMapper
 {
@@ -30,19 +29,10 @@ class OptionMapper
             'product'        => $rate->getMethodTitle() ?: (string) $rate->getMethod(),
             'price'          => (float) $rate->getPrice(),
             'currency'       => $currency,
+            // Internal only (stripped before Avarda); used to resolve providers.
+            'carrierCode'    => (string) $rate->getCarrier(),
+            'methodCode'     => (string) $rate->getMethod(),
         ];
     }
 
-    /**
-     * @param Rate[] $rates
-     * @return array[]
-     */
-    public function toOptions(array $rates, string $currency): array
-    {
-        $options = [];
-        foreach ($rates as $rate) {
-            $options[] = $this->toOption($rate, $currency);
-        }
-        return $options;
-    }
 }
