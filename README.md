@@ -22,7 +22,7 @@ settings:
 
 | Field | Notes |
 |---|---|
-| Partner Bearer Secret | Must match the secret configured in the Avarda merchant portal |
+| Partner Bearer Secret | Must match the secret configured in the Avarda merchant portal. Use the **Generate** button to create a random one. |
 | Session TTL (seconds) | Default `3600` |
 
 Also set the implementor base URL in the Avarda merchant portal to the store
