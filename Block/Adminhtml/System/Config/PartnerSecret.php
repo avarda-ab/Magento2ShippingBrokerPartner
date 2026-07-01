@@ -27,6 +27,8 @@ class PartnerSecret extends Field
             . '<span>' . $this->escapeHtml(__('Generate')) . '</span>'
             . '</button>';
 
-        return parent::_getElementHtml($element) . ' ' . $button;
+        // Own line so a config path-hint appended to the field cell does not displace it.
+        return parent::_getElementHtml($element)
+            . '<div class="avarda-generate-secret">' . $button . '</div>';
     }
 }
