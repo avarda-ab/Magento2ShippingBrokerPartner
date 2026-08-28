@@ -8,7 +8,6 @@ the option list is rendered inside the Avarda checkout. Registers as the
 
 ## Requirements
 
-- PHP 8.2+
 - `avarda/shipping-broker`
 - `avarda/checkout3`
 
