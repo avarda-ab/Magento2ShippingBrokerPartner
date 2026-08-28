@@ -1,11 +1,10 @@
 # Avarda_ShippingBrokerPartner
 
-Implements **Avarda Partner Shipping** with Magento acting as the implementor:
-Avarda's checkout calls back into this store to create and maintain a shipping
-session, Magento answers with its own carriers' rates, and the option list is
-rendered inside the Avarda checkout. Registers as the `partner` provider for
-`Avarda_ShippingBroker` (an alternative to the nShift provider). The customer's
-chosen option is saved onto the order when the order is placed.
+Avarda Partner Shipping provider for `Avarda_ShippingBroker`, with Magento acting
+as the implementor: Avarda's checkout calls back into this store to create and
+maintain a shipping session, Magento answers with its own carriers' rates, and
+the option list is rendered inside the Avarda checkout. Registers as the
+`partner` provider (an alternative to the nShift provider).
 
 ## Requirements
 
@@ -16,9 +15,9 @@ chosen option is saved onto the order when the order is placed.
 ## Configuration
 
 Under **Stores → Configuration → Sales → Payment Methods → Avarda Checkout V3 →
-Avarda Shipping Broker**, set **Provider** to `partner`. This is the shipping-provider switch
-(shared with nShift); choosing `partner` activates this module and reveals its
-settings:
+Avarda Shipping Broker**, set **Provider** to `partner`. This is the
+shipping-provider switch (shared with nShift); choosing `partner` activates this
+module and reveals its settings:
 
 | Field | Notes |
 |---|---|
@@ -43,6 +42,14 @@ points near the delivery address and stores the chosen point so the carrier's
 label printing keeps working. This module ships no pickup-point providers
 itself; plain delivery works without any. If a carrier's pickup point lookup
 fails, the option falls back to plain delivery.
+
+## Order data
+
+When the order is placed, the broker's placeholder shipping method is replaced
+with the Magento method the customer actually chose, and a snapshot of the
+selection is stored on the order's shipping address as
+`avarda_shipping_selection` (JSON), exposed as an order address extension
+attribute. Sessions live in their own table, keyed by the Avarda purchase ID.
 
 ## Notes and limitations
 
