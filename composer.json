@@ -1,11 +1,8 @@
 {
     "name": "avarda/shipping-broker-partner",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Avarda Partner Shipping (Magento as implementor) for the Avarda shipping broker.",
     "type": "magento2-module",
-    "license": [
-        "Proprietary"
-    ],
     "require": {
         "avarda/shipping-broker": "*",
         "avarda/checkout3": "*",
